@@ -40,9 +40,11 @@ Planned, in order: `sensor.py` (measured gas-sensor response as a filter), `agen
 4. Retrain with the measured sensor response and the hardware tick in the loop; sweep response time to get a degradation curve for each controller.
 5. Fly the learned table, cast-and-surge, and a random walk on identical trials: small quadrotor, one gas sensor, stationary fan, ethanol source, overhead camera for scoring.
 
-## What this is not
+## Where this came from
 
-It is not a fly-brain simulation. Nothing here copies neurons. The connection to insects is that a policy optimized by reward in realistic turbulence ends up looking like moth behavior, which suggests the behavior is close to optimal for the sensor. A separate write-up covers why whole-connectome drone controllers do not work and why this is the opposite approach.
+This started as an attempt to put the FlyWire fruit-fly connectome on a drone. Several projects claim to have done it, and the drone does fly. Reading the best-known one's code, the brain turns out to be decorative: the simulation keeps one synapse in a hundred, integrates with a time step fifty times longer than the membrane time constant so a third of the network saturates every tick, cancels inhibition to exactly zero, and reads "thrust" as the number of descending neurons that spiked. The output is a near-constant, and the script that actually flies the Tello drives it with sine waves of the wall clock and contains no neurons. Done correctly it would still not work: a connectome is a wiring map without synaptic strengths, dynamics or neuromodulation, and the circuits that stabilize a fly's flight run through the ventral nerve cord and halteres, which are not in the brain dataset.
+
+The useful lesson was to copy what insects do, not what they are made of. Moths find a mate's pheromone across hundreds of metres of turbulent air with a sensor and a brain a drone can match, using a strategy (surge on contact, cast when lost) that is well described. In 2025 and 2026 a group of statistical physicists showed that this strategy emerges on its own when an agent with one integer of memory is optimized by reward in simulated turbulence, and that the learned version beats the hand-coded one. Nothing here copies a neuron. The project takes that strategy, which so far exists only in simulation, and gives it a cheap body. The FlyWire part is written up separately, with the code quoted.
 
 ## Status
 
